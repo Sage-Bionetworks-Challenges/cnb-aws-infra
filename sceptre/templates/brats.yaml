@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  BraTS challenge infrastructure
+Parameters:
+  Department:
+    Description: 'The department for this resource'
+    Type: String
+    AllowedPattern: '^\S*$'
+    ConstraintDescription: 'Must be string with no spaces'
+  Project:
+    Description: 'The name of the project that this resource is used for'
+    Type: String
+    AllowedPattern: '^\S*$'
+    ConstraintDescription: 'Must be string with no spaces'
+  OwnerEmail:
+    Description: 'Email address of the owner of this resource'
+    Type: String
+    AllowedPattern: '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+    ConstraintDescription: 'Must be an acceptable email address syntax(i.e. joe.smith@sagebase.org)'
+  KeyName:
+    Description: ec2 Key
+    Type: String
+    Default: nlpsandbox
+  PublicSubnets:
+    Description: List of subnets for the ELB
+    Type: List<AWS::EC2::Subnet::Id>
+  PrivateSubnets:
+    Description: List of subnets for the ELB
+    Type: List<AWS::EC2::Subnet::Id>
+Resources:
+
+  # BraTS main queue instance
+  MainInstance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      # ubuntu base image
+      ImageId: ami-0b7906ab614596e7e
+      InstanceType: t3.medium
+      Monitoring: True
+      DisableApiTermination: False
+      KeyName: !Ref KeyName
+      BlockDeviceMappings:
+      - DeviceName: "/dev/sda1"
+        Ebs:
+          DeleteOnTermination: true
+          VolumeSize: 300
+          Encrypted: true
+      Tags:
+        - Key: Name
+          Value: "BraTS main"
+        - Key: "Department"
+          Value: !Ref Department
+        - Key: "Project"
+          Value: !Ref Project
+        - Key: "OwnerEmail"
+          Value: !Ref OwnerEmail
+      NetworkInterfaces:
+      - DeleteOnTermination: true
+        DeviceIndex: "0"
+        GroupSet:
+        - !ImportValue 'us-east-1-cnbvpc-VpnSecurityGroup'
+        - !GetAtt InstanceSecurityGroup.GroupId
+        SubnetId: !ImportValue 'us-east-1-cnbvpc-PrivateSubnet'
+      UserData:
+        # install Docker and Docker-compose
+        Fn::Base64: |
+          #!/bin/bash
+          apt-get update -y
+          apt-get upgrade -y
+          apt-get install docker.io git -y
+          service docker start
+          usermod -a -G docker ubuntu
+          curl -L "https://github.com/docker/compose/releases/download/1.28.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          chmod +x /usr/local/bin/docker-compose
+          su ubuntu
+          cd /home/ubuntu
+          git clone https://github.com/Sage-Bionetworks/SynapseWorkflowOrchestrator.git
+
+Outputs:
+  MainInstancePrivateIp:
+    Value: !GetAtt MainInstance.PrivateIp
+    Export:
+      Name: !Sub '${AWS::Region}-${AWS::StackName}-MainInstancePrivateIp'
