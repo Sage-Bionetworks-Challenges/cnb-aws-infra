@@ -20,13 +20,7 @@ Parameters:
   KeyName:
     Description: ec2 Key
     Type: String
-    Default: nlpsandbox
-  PublicSubnets:
-    Description: List of subnets for the ELB
-    Type: List<AWS::EC2::Subnet::Id>
-  PrivateSubnets:
-    Description: List of subnets for the ELB
-    Type: List<AWS::EC2::Subnet::Id>
+    Default: cnb
 Resources:
 
   # BraTS main queue instance
