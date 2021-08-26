@@ -1,5 +1,5 @@
 template_path: remote/peer-route-config.yaml
-stack_name: peer-nlpsandbox-vpc-admincentral
+stack_name: peer-cnb-vpc-admincentral
 parameters:
   PeeringConnectionId: pcx-0d02daf67078f046e
   VpcPrivateRouteTable: rtb-076a2da51f9b45fe3
