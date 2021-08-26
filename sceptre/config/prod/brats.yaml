@@ -1,0 +1,8 @@
+template_path: brats.yaml
+stack_name: brats
+parameters:
+  Department: "CNB"
+  Project: "BraTS"
+  OwnerEmail: "thomas.yu@sagebase.org"
+stack_tags:
+  name: brats
