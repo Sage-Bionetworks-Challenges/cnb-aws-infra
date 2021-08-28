@@ -51,9 +51,9 @@ Resources:
       NetworkInterfaces:
       - DeleteOnTermination: true
         DeviceIndex: "0"
-        GroupSet:
-        - !ImportValue 'us-east-1-cnbvpc-VpnSecurityGroup'
-        SubnetId: !ImportValue 'us-east-1-cnbvpc-PrivateSubnet'
+        # GroupSet:
+        # - !ImportValue 'us-east-1-cnbvpc-VpnSecurityGroup'
+        # SubnetId: !ImportValue 'us-east-1-cnbvpc-PrivateSubnet'
       UserData:
         # install Docker and Docker-compose
         Fn::Base64: |

@@ -11,7 +11,7 @@ jobs:
         with:
           python-version: 3.9
       - uses: pre-commit/action@v2.0.0
-  sceptre-sandbox:
+  sceptre-cnb:
     runs-on: ubuntu-latest
     needs: pre-commit
     if: github.ref == 'refs/heads/main'
