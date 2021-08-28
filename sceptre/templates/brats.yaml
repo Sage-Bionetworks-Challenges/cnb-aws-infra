@@ -53,7 +53,6 @@ Resources:
         DeviceIndex: "0"
         GroupSet:
         - !ImportValue 'us-east-1-cnbvpc-VpnSecurityGroup'
-        - !GetAtt InstanceSecurityGroup.GroupId
         SubnetId: !ImportValue 'us-east-1-cnbvpc-PrivateSubnet'
       UserData:
         # install Docker and Docker-compose
