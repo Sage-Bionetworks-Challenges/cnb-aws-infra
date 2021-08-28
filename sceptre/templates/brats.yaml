@@ -48,12 +48,12 @@ Resources:
           Value: !Ref Project
         - Key: "OwnerEmail"
           Value: !Ref OwnerEmail
-      # NetworkInterfaces:
-      # - DeleteOnTermination: true
-      #   DeviceIndex: "0"
-      #   GroupSet:
-      #   - !ImportValue 'us-east-1-cnbvpc-VpnSecurityGroup'
-      #   SubnetId: !ImportValue 'us-east-1-cnbvpc-PrivateSubnet'
+      NetworkInterfaces:
+      - DeleteOnTermination: true
+        DeviceIndex: "0"
+        GroupSet:
+        - 'sg-07a3fb012fcbf11bd'
+        SubnetId: 'subnet-18b0c629'
       UserData:
         # install Docker and Docker-compose
         Fn::Base64: |
