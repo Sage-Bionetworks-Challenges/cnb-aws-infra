@@ -1,0 +1,12 @@
+template_path: remote/vpc-mini.yaml
+stack_name: cnbvpc
+stack_tags:
+  Department: "CNB"
+  Project: "challenges"
+  OwnerEmail: "thomas.yu@sagebase.org"
+parameters:
+  VpcSubnetPrefix: "10.255.21"
+  VpcName: cnbvpc
+hooks:
+  before_launch:
+    - !cmd "wget {{stack_group_config.aws_infra_templates_root_url}}/v0.2.5/templates/VPC/vpc-mini.yaml -N -P templates/remote"
