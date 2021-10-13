@@ -5,7 +5,7 @@ stack_tags:
   Project: "challenges"
   OwnerEmail: "thomas.yu@sagebase.org"
 parameters:
-  VpcSubnetPrefix: "10.255.21"
+  VpcSubnetPrefix: "10.255.22"
   VpcName: cnbvpc
 hooks:
   before_launch:
