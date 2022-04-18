@@ -1,2 +1,2 @@
 # cnb-aws-infra
-Challenge and Benchmarking AWS infrastructure
+Challenges and Benchmarking AWS infrastructure
